@@ -1,0 +1,99 @@
+<odoo>
+  <!-- BODY -->
+  <template id="sales_logs_pdf_body">
+    <t t-set="rows" t-value="(docs or {}).get('logs') or []"/>
+    <t t-set="totals" t-value="(docs or {}).get('totals') or {}"/>
+    <t t-set="period" t-value="(docs or {}).get('period') or {}"/>
+    <t t-set="company" t-value="env.company"/>
+    <t t-set="company_currency" t-value="company.currency_id"/>
+
+    <!-- HEADER -->
+    <div style="text-align:center; margin-bottom:20px;">
+      <h2 style="margin:0;">Diclan POS — Sales Invoice Report</h2>
+      <p style="margin:0; font-size:12px;">
+        <strong>Company:</strong> <t t-esc="company.display_name"/> | 
+        <strong>VAT #:</strong> <t t-esc="company.vat or 'N/A'"/>
+      </p>
+      <p style="margin:0; font-size:12px;">
+        <strong>Period:</strong> 
+        <t t-esc="period.get('date_from','')"/> → <t t-esc="period.get('date_to','')"/>
+      </p>
+    </div>
+
+    <!-- TOTALS -->
+    <h3>Summary</h3>
+    <table class="table table-sm" style="width:100%; border:1px solid #000; border-collapse:collapse; margin-bottom:20px;">
+      <thead style="background:#f0f0f0;">
+        <tr>
+          <th style="border:1px solid #000; padding:5px;">Untaxed</th>
+          <th style="border:1px solid #000; padding:5px;">Tax</th>
+          <th style="border:1px solid #000; padding:5px;">Grand Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border:1px solid #000; padding:5px; text-align:right;">
+            <t t-esc="company_currency.symbol or company_currency.name"/> 
+            <t t-esc="'{:,.2f}'.format((totals.get('untaxed') or 0.0) or sum([(rr or {}).get('amount_untaxed') or 0.0 for rr in rows]))"/>
+          </td>
+          <td style="border:1px solid #000; padding:5px; text-align:right;">
+            <t t-esc="company_currency.symbol or company_currency.name"/> 
+            <t t-esc="'{:,.2f}'.format((totals.get('tax') or 0.0) or sum([(rr or {}).get('amount_tax') or 0.0 for rr in rows]))"/>
+          </td>
+          <td style="border:1px solid #000; padding:5px; text-align:right;">
+            <t t-esc="company_currency.symbol or company_currency.name"/> 
+            <t t-esc="'{:,.2f}'.format((totals.get('total') or 0.0) or sum([(rr or {}).get('amount_total') or 0.0 for rr in rows]))"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Invoices counted:</strong> <t t-esc="(totals.get('count') if totals else 0) or len(rows)"/></p>
+
+    <!-- DETAILS -->
+    <h3>Invoice Logs</h3>
+    <table class="table table-sm" style="width:100%; border:1px solid #000; border-collapse:collapse;">
+      <thead style="background:#f0f0f0;">
+        <tr>
+          <th style="border:1px solid #000; padding:5px;">Date</th>
+          <th style="border:1px solid #000; padding:5px;">Invoice #</th>
+          <th style="border:1px solid #000; padding:5px;">Customer</th>
+          <th style="border:1px solid #000; padding:5px;">Session</th>
+          <th style="border:1px solid #000; padding:5px;">Cashier</th>
+          <th style="border:1px solid #000; padding:5px; text-align:right;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <t t-if="rows">
+          <tr t-foreach="rows" t-as="r">
+            <td style="border:1px solid #000; padding:5px;"><t t-esc="(r or {}).get('date','')"/></td>
+            <td style="border:1px solid #000; padding:5px;"><t t-esc="(r or {}).get('name','')"/></td>
+            <td style="border:1px solid #000; padding:5px;"><t t-esc="(r or {}).get('partner','')"/></td>
+            <td style="border:1px solid #000; padding:5px;"><t t-esc="(r or {}).get('session','')"/></td>
+            <td style="border:1px solid #000; padding:5px;"><t t-esc="(r or {}).get('cashier','')"/></td>
+            <td style="border:1px solid #000; padding:5px; text-align:right;">
+              <t t-set="cur_id" t-value="((r or {}).get('currency_id') or company_currency.id)"/>
+              <t t-set="cur" t-value="env['res.currency'].browse(cur_id)"/>
+              <t t-esc="cur.symbol or cur.name"/> <t t-esc="'{:,.2f}'.format(((r or {}).get('amount_total') or 0.0))"/>
+            </td>
+          </tr>
+        </t>
+        <t t-if="not rows">
+          <tr><td colspan="6" style="border:1px solid #000; padding:5px; text-align:center;">No logs in this period.</td></tr>
+        </t>
+      </tbody>
+    </table>
+  </template>
+
+  <!-- WRAPPER -->
+  <template id="sales_logs_pdf_document">
+    <main class="o_report_layout">
+      <div class="header"/>
+      <div class="article o_report_layout_container">
+        <div class="page">
+          <t t-call="pos_invoice_diclan.sales_logs_pdf_body"/>
+        </div>
+      </div>
+      <div class="footer"/>
+    </main>
+  </template>
+</odoo>

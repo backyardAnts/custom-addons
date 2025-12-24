@@ -1,0 +1,12 @@
+<odoo>
+  <menuitem id="menu_diclan_reporting_root"
+            name="Diclan Reporting"
+            parent="point_of_sale.menu_point_root"
+            sequence="60"/>
+
+  <menuitem id="menu_diclan_sales_report"
+            name="Sales Report (Diclan)"
+            parent="menu_diclan_reporting_root"
+            action="action_open_pos_sales_report_wizard"
+            sequence="10"/>
+</odoo>

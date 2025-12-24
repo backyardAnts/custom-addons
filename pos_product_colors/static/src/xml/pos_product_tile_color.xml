@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="point_of_sale.ProductItem" t-inherit-mode="extension">
+        <xpath expr="//article" position="attributes">
+            <attribute name="t-att-style">
+                <![CDATA[
+                    props.product && props.product.pos_bg_color
+                        ? 'background-color:' + props.product.pos_bg_color + ';'
+                        : ''
+                ]]>
+            </attribute>
+        </xpath>
+    </t>
+
+</templates>

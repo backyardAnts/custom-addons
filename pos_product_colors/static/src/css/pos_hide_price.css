@@ -1,0 +1,4 @@
+/* Hide price under product name in POS product grid */
+.pos .product .price-tag {
+    display: none !important;
+}

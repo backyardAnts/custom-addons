@@ -1,0 +1,80 @@
+<!-- views/pos_invoice_log_views.xml -->
+<odoo>
+  <!-- Tree (list) -->
+  <record id="view_pos_invoice_log_tree" model="ir.ui.view">
+    <field name="name">pos.invoice.log.tree</field>
+    <field name="model">pos.invoice.log</field>
+    <field name="arch" type="xml">
+      <tree string="POS Invoice Logs">
+        <field name="create_date"/>
+        <field name="name"/>
+        <field name="partner_id"/>
+        <field name="session_id"/>
+        <field name="user_id"/>
+        <field name="amount_total"/>
+        <field name="currency_id"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- Form -->
+  <record id="view_pos_invoice_log_form" model="ir.ui.view">
+    <field name="name">pos.invoice.log.form</field>
+    <field name="model">pos.invoice.log</field>
+    <field name="arch" type="xml">
+      <form string="POS Invoice Log">
+        <sheet>
+          <group>
+            <group>
+              <field name="name"/>
+              <field name="partner_id"/>
+              <field name="pos_order_id"/>
+              <field name="session_id"/>
+              <field name="user_id"/>
+            </group>
+            <group string="Totals">
+              <field name="amount_untaxed" readonly="1"/>
+              <field name="amount_tax" readonly="1"/>
+              <field name="amount_total" readonly="1"/>
+              <field name="currency_id" readonly="1"/>
+            </group>
+          </group>
+
+          <notebook>
+            <page string="Lines">
+              <field name="line_ids">
+
+                <tree editable="bottom">
+                  <field name="product_id"/>
+                  <field name="qty"/>
+                  <field name="price_unit"/>
+                  <field name="discount"/>
+                  <field name="taxes"/>
+                  <field name="subtotal" readonly="1"/>
+                  <field name="subtotal_incl" readonly="1"/>
+                </tree>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action/Menu -->
+  <record id="action_pos_invoice_log" model="ir.actions.act_window">
+    <field name="name">POS Invoice Logs</field>
+    <field name="res_model">pos.invoice.log</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_pos_invoice_diclan_root"
+            name="POS Invoice Diclan"
+            parent="point_of_sale.menu_point_root"
+            sequence="90"/>
+  <menuitem id="menu_pos_invoice_log"
+            name="Invoice Logs"
+            parent="menu_pos_invoice_diclan_root"
+            action="action_pos_invoice_log"
+            sequence="10"/>
+</odoo>

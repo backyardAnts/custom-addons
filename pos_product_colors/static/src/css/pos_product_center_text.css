@@ -1,0 +1,16 @@
+/* Center product name text in POS tiles */
+.pos .product {
+    display: flex;
+    align-items: center;        /* vertical center */
+    justify-content: center;    /* horizontal center */
+    text-align: center;
+}
+
+/* Ensure the product name itself is centered */
+.pos .product .product-name {
+    text-align: center;
+    width: 100%;
+    direction: rtl;             /* Arabic support */
+    font-weight: 600;
+    line-height: 1.2;
+}

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pos_invoice_log_user,access.pos.invoice.log.user,model_pos_invoice_log,base.group_user,0,0,0,0
+access_pos_invoice_log_admin,access.pos.invoice.log.admin,model_pos_invoice_log,base.group_system,1,1,1,1
+access_pos_invoice_log_line_user,access.pos.invoice.log.line.user,model_pos_invoice_log_line,base.group_user,1,0,0,0
+access_pos_invoice_log_line_admin,access.pos.invoice.log.line.admin,model_pos_invoice_log_line,base.group_system,1,1,1,1
+access_pos_sales_report_wizard_manager,pos.sales.report.wizard,model_pos_sales_report_wizard,point_of_sale.group_pos_manager,1,0,1,0
