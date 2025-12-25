@@ -2,7 +2,7 @@
 from odoo import models, fields, api
 
 class PosInvoiceLog(models.Model):
-    _name = "pos.invoice.log"
+    _name = "pos.invoice.log" 
     _description = "POS Invoice Log"
 
     # Core
