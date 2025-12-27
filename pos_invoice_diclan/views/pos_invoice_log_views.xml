@@ -49,7 +49,7 @@
                   <field name="qty"/>
                   <field name="price_unit"/>
                   <field name="discount"/>
-                  <field name="taxes"/>
+                  <field name="tax_ids" widget="many2many_tags"/>
                   <field name="subtotal" readonly="1"/>
                   <field name="subtotal_incl" readonly="1"/>
                 </tree>

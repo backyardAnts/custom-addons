@@ -1,0 +1,3 @@
+codex "$(cat .ai/memory.md .ai/context.md)
+
+Summarize where we stopped and update context.md accordingly."
